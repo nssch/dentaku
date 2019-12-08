@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TEST</title>
+    <link rel="stylesheet" href="css/test.css">
+    <link rel="stylesheet" href="css/reset.css">
+</head>
+
+
+<body>
+    <div class="box">
+        <div class="outputarea">
+            <div class="output" id="output"></div>
+        </div>
+
+        <div>
+            <table>
+                <tr>
+                    <td><input type="button" id="clear" value="C"></td>
+                    <td><input type="button" id="minus" value="+/-"></td>
+                    <td><input type="button" id="percent" value="%"></td>
+                    <td><input type="button" class="calc_btn" value="÷"></td>
+                </tr>
+                <tr>
+                    <td><input type="button" class="num_btn" value="7"></td>
+                    <td><input type="button" class="num_btn" value="8"></td>
+                    <td><input type="button" class="num_btn" value="9"></td>
+                    <td><input type="button" class="calc_btn" value="×"></td>
+                </tr>
+                <tr>
+                    <td><input type="button" class="num_btn" value="4"></td>
+                    <td><input type="button" class="num_btn" value="5"></td>
+                    <td><input type="button" class="num_btn" value="6"></td>
+                    <td><input type="button" class="calc_btn" value="-"></td>
+                </tr>
+                <tr>
+                    <td><input type="button" class="num_btn" value="1"></td>
+                    <td><input type="button" class="num_btn" value="2"></td>
+                    <td><input type="button" class="num_btn" value="3"></td>
+                    <td><input type="button" class="calc_btn" value="+"></td>
+                </tr>
+                <tr>
+                    <td><input type="button" class="num_btn" value="00"></td>
+                    <td><input type="button" class="num_btn" value="0"></td>
+                    <td><input type="button" class="num_btn" value="."></td>
+                    <td><input type="button" id="eq_btn" value="="></td>
+                </tr>
+            </table>
+        </div>
+
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script>
+            $(function () {
+                //outputには最初何も表示されていない
+                //最初は数値か+/‐か ．しか押せない
+                //※数値押す→次の数値押す➡記号が押されるまで文字列としてつなげてoutputのところに表示
+                //記号が押されたら↑の数字を変数に格納して計算式に代入
+                //※同様
+                //※が何回か繰り返されて＝押されたら計算する。計算結果をoutputに表示
+                //c押したら入力したもの全てクリア
+
+
+                //使う変数
+                var pushed = '';//押された数字ボタンの値
+                var num1 = '';//最初に入力される数値                
+                var num2 = '';//演算子入力後に最初の数値を入れておく
+                var calc = '';//入力された演算子                
+                var total = '';//合計値                
+                var output = '';//表示される値
+                var shousuu = 0; //小数点の有無判定。０：押していない／１：おしている
+
+
+                //数字ボタンを押す
+                $(".num_btn").click(function () {
+
+                    pushed = $(this).val();
+                    num1 += pushed;
+                    console.log(num1);
+                    $("#output").text(num1);
+
+                    // //小数点は２回以上押せないようにする                    
+
+                    if ($(this).val() == '.') {
+
+                        if (num1 == "") {
+                            $(this).val() = "0.";
+                        } else {
+                            $(this).val() = $(this).val() + ".";
+                        }
+                        shousuu = 1;
+                        return;
+
+                    }
+                    // if ((Math.floor(num1) !== num1) && (pushed == '.')) {
+                    //     pushed = '';
+                    // }
+
+
+                });
+
+                //演算ボタンを押す
+                $(".calc_btn").click(function () {
+                    num2 = num1;
+                    num1 = '';
+                    calc = $(this).val();
+                    console.log(num2);
+                    console.log(num1);
+                    console.log(calc);
+
+                });
+
+                //イコールボタンを押す
+                $("#eq_btn").click(function () {
+                    if (calc == '+') {
+                        total = num2 * 1 + num1 * 1;
+                        $("#output").text(total);
+                    } else if (calc == '-') {
+                        total = num2 * 1 - num1 * 1;
+                        $("#output").text(total);
+                    } else if (calc == '×') {
+                        total = num2 * 1 * num1 * 1;
+                        $("#output").text(total);
+                    } else if (calc == '÷') {
+                        total = num2 * 1 / num1 * 1;
+                        $("#output").text(total);
+                    }
+                });
+
+                //Cボタンを押す
+                $("#clear").click(function () {
+                    num1 = '';
+                    num2 = '';
+                    calc = '';
+                    total = '';
+                    console.log(num2);
+                    console.log(num1);
+                    console.log(calc);
+                    console.log(total);
+                    $("#output").text('');
+
+                });
+
+                //％ボタンを押す
+                $("#percent").click(function () {
+                    total = num1 * 0.01;
+                    $("#output").text(total);
+                });
+
+
+
+                //??????
+                //+/-ボタンの処理。num1の符号は変えられたけど演算後の符号がおかしい・・・・
+                // $("#minus").click(function () {
+                //     total = num1 * (-1);
+                //     console.log(total);
+                //     $("#output").text(total);
+
+                // });
+
+
+
+
+
+
+                // //現在入力している数値
+                // var myInput = "";
+                // //合計値。初期値は０
+                // var total = 0;
+
+                // //数字ボタンが押された時の処理を設定
+                // $("input").click(function () { //数字ボタンだけの処理にするためにid=num_btnの値とろうとしたがうまくいかず➡数字ボタンのみinputにして記号はbuttonに変更
+                //     //押されたボタンのvalue取得し変数に格納
+                //     var pushed = $(this).val();
+                //     //console.log(pushed);
+
+                //     //押されたボタンの数が文字列のままくっつけてoutputに表示される                    
+                //     myInput += pushed;
+                //     $("#output").text(myInput);
+                //     console.log(myInput);
+
+                // });
+
+                // //記号ボタンを押したときの処理の設定
+                // $("button").click(function () {
+                //     var btn = $(this).val();
+                //     console.log(btn);
+
+                // });
+
+
+
+            });
+        </script>
+
+    </div>
+
+</body>
+
+</html>

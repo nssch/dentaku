@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="ja">
+
+<head>
+    <meta charset="UTF-8">
+    <!-- <meta name="viewport" content="width=device-width, initial-scale=1.0"> -->
+    <meta name="viewport" content="width=device-width, user-scalable=no, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>TEST</title>
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/reset.css">
+</head>
+
+
+<body>
+    <div class="box">
+        <div class="outputarea">
+            <div class="output" id="output"></div>
+        </div>
+
+        <div>
+            <table>
+                <tr>
+                    <td><button class="calc2_button" value="C">C</button></td>
+                    <td><button class="calc2_button" value="+/-">+/-</button></td>
+                    <td><button class="calc2_button" value="%">%</button></td>
+                    <td><button class="calc_button" value="/">÷</button></td>
+                </tr>
+                <tr>
+                    <td><input type="button" id="num_btn" class="button" value="7"></td>
+                    <td><input type="button" id="num_btn" class="button" value="8"></td>
+                    <td><input type="button" id="num_btn" class="button" value="9"></td>
+                    <td><button class="calc_button" value="*">×</button></td>
+                </tr>
+                <tr>
+                    <td><input type="button" id="num_btn" class="button" value="4"></td>
+                    <td><input type="button" id="num_btn" class="button" value="5"></td>
+                    <td><input type="button" id="num_btn" class="button" value="6"></td>
+                    <td><button class="calc_button" value="-">-</button></td>
+                </tr>
+                <tr>
+                    <td><input type="button" id="num_btn" class="button" value="1"></td>
+                    <td><input type="button" id="num_btn" class="button" value="2"></td>
+                    <td><input type="button" id="num_btn" class="button" value="3"></td>
+                    <td><button class="calc_button" value="+">+</button></td>
+                </tr>
+                <tr>
+                    <td><input type="button" id="num_btn" class="button" value="00"></td>
+                    <td><input type="button" id="num_btn" class="button" value="0"></td>
+                    <td><input type="button" class="button" value="."></td>
+                    <td><button class="calc_button" value="=">=</button></td>
+                </tr>
+            </table>
+        </div>
+
+
+
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+        <script>
+            $(function () {
+                //outputには最初何も表示されていない
+                //最初は数値か+/‐か ．しか押せない
+                //※数値押す→次の数値押す➡記号が押されるまで文字列としてつなげてoutputのところに表示
+                //記号が押されたら↑の数字を変数に格納して計算式に代入
+                //※同様
+                //※が何回か繰り返されて＝押されたら計算する。計算結果をoutputに表示
+                //c押したら入力したもの全てクリア
+
+                //使用する変数を決める
+                var pushed = '';//押された数字ボタンの値
+                var num1 = '';//最初に入力される数値                
+                var num2 = '';//演算子入力後に最初の数値を入れておく
+                var num3 = '';//演算子入力後に入力した値
+                var calc = '';//入力された演算子                
+                var total = '';//合計値                
+                var output = '';//表示される値
+
+                $("input").click(function () {  //数字ボタンが押されたら
+                    pushed = $(this).val();     //押されたボタンの値取得
+                    num1 += pushed;             //押されたボタンの値(文字列)をくっつけてnum1に格納
+                    output = $("#output").text(num1);//表示スペースにnum1の値表示
+                    console.log(num1);
+
+                });
+
+                $("button").click(function () { //演算子ボタンが押されたら
+                    if ($(this).val() !== '=') { //calc!=='='としていたので、+-*/calcが上書きされてしまっていた
+                        calc = $(this).val();       //押された演算子ボタンの値を取得
+                        num2 = num1;                //演算子ボタンが押されたらnum1はnum2に格納
+                        num1 = '';                //？？？表示されているnum1を消して次の数値を入力できるようにしたい。動きはそれっぽいけどこれだとnum1の値が消えてそう・・・・
+                        console.log(num2);
+                        console.log(calc);
+
+                        // //num1はnum2に入れた後消して、演算子入れた後に入力された値はnum3に格納。num2とcalcとnum3で計算
+                        // $("input").click(function () {  //数字ボタンが押されたら
+                        //     pushed = $(this).val();     //押されたボタンの値取得
+                        //     num3 += pushed;             //押されたボタンの値(文字列)をくっつけてnum1に格納
+                        //     input = $("#output").text(num3);//表示スペースにnum3の値表示
+                        //     //console.log(num2);
+                        //     console.log(num3);
+
+                        // });
+                    } else {
+                        console.log(num2);
+                        console.log(calc);
+                        console.log(num1);
+                        if (calc == '+') {
+                            total = num1 * 1 + num2 * 1;
+                            output = $("#output").text(total);
+                        } else if (calc == '-') {
+                            total = num2 * 1 - num1 * 1;
+                            output = $("#output").text(total);
+                        } else if (calc == '*') {
+                            total = num1 * 1 * num2 * 1;
+                            output = $("#output").text(total);
+                        } else if (calc == '/') {
+                            total = num2 * 1 / num1 * 1;
+                            output = $("#output").text(total);
+                        }
+                    }
+
+
+                });
+
+
+
+
+            });
+        </script>
+
+    </div>
+
+</body>
+
+</html>
