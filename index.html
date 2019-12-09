@@ -47,7 +47,8 @@
                 <tr>
                     <td><input type="button" class="num_btn" value="00"></td>
                     <td><input type="button" class="num_btn" value="0"></td>
-                    <td><input type="button" class="num_btn" value="."></td>
+                    <td><input type="button" class="shousuu" value="."
+                            style="background-color: rgba(36, 35, 35, 0.897); color: white;"></td>
                     <td><input type="button" id="eq_btn" value="="></td>
                 </tr>
             </table>
@@ -74,7 +75,7 @@
                 var calc = '';//入力された演算子                
                 var total = '';//合計値                
                 var output = '';//表示される値
-                var shousuu = 0; //小数点の有無判定。０：押していない／１：おしている
+                var shousuu = true; //小数点の有無判定。
 
 
                 //数字ボタンを押す
@@ -85,25 +86,26 @@
                     console.log(num1);
                     $("#output").text(num1);
 
-                    // //小数点は２回以上押せないようにする                    
-
-                    if ($(this).val() == '.') {
-
-                        if (num1 == "") {
-                            $(this).val() = "0.";
-                        } else {
-                            $(this).val() = $(this).val() + ".";
-                        }
-                        shousuu = 1;
-                        return;
-
-                    }
-                    // if ((Math.floor(num1) !== num1) && (pushed == '.')) {
-                    //     pushed = '';
-                    // }
-
 
                 });
+
+                // //小数点は２回以上押せないようにする 
+                $('.shousuu').click(function () {
+                    if (num1 == "") {
+                        num1 = "0.";
+                        console.log(num1);
+                        $("#output").text(num1);
+
+                    } else {
+                        num1 = num1 + ".";
+                        console.log(num1);
+                        $("#output").text(num1);
+                    }
+
+                    false;
+                    return;
+                });
+
 
                 //演算ボタンを押す
                 $(".calc_btn").click(function () {
@@ -157,12 +159,13 @@
 
                 //??????
                 //+/-ボタンの処理。num1の符号は変えられたけど演算後の符号がおかしい・・・・
-                // $("#minus").click(function () {
-                //     total = num1 * (-1);
-                //     console.log(total);
-                //     $("#output").text(total);
+                $("#minus").click(function () {
+                    num1 = num1 * (-1);
+                    console.log(num1);
+                    $("#output").text(num1);
 
-                // });
+
+                });
 
 
 
